@@ -1,0 +1,293 @@
+using System;
+public class Exercise1
+{
+    public static void Main( )
+    {
+        int x = 0; 
+        int y = 0;
+        int n = 0;
+        int numberOfFlips = 0;
+        int xCoordinate = 0;
+        int yCoordinate = 0;
+        
+        
+       
+        bool validX = false;
+        bool validY = false;
+        bool validN = false;
+        bool validXCoordinate = false;
+        bool validYCoordinate = false;
+     
+       
+        Console.WriteLine("Please enter the height of the grid between 1 and 1000: ");
+
+    while(! validX)
+{
+    if (! Int32.TryParse(Console.ReadLine(), out x)){
+      Console.WriteLine("This is not a number. Please enter the height of the grid: ");
+    }
+    else {
+      if (x > 0 && x < 1000){
+        validX = true;
+      }
+      else {
+        Console.WriteLine("Please enter a number between 1 and 1000: ");
+      }
+    }
+}
+
+Console.WriteLine ("Please enter the width of the grid between 1 and 1000: ");
+
+    while(! validY)
+{
+    if (! Int32.TryParse(Console.ReadLine(), out y)){
+      Console.WriteLine("This is not a number. Please enter the width of the grid: ");
+    }
+    else {
+      if (y > 0 && y < 1000){
+        validY = true;
+      }
+      else {
+        Console.WriteLine("Please enter a number between 1 and 1000: ");
+      }
+    }
+}
+
+Console.WriteLine ("Please enter the number of generations: ");
+
+    while(! validN)
+{
+    if (! Int32.TryParse(Console.ReadLine(), out n)){
+      Console.WriteLine("This is not a number. Please enter the number of generations: ");
+    }
+    else {
+      if (n > 0){
+        validN = true;
+      }
+      else {
+        Console.WriteLine("Please enter a number greater than 0: ");
+      }
+    }
+}
+
+Console.WriteLine ("Please enter x coordinate of the cell that you want to track: ");
+
+    while(! validXCoordinate)
+{
+    if (! Int32.TryParse(Console.ReadLine(), out xCoordinate)){
+      Console.WriteLine("This is not a number. Please enter the number of the x coordinate: ");
+    }
+    else {
+      if (xCoordinate >= 0 && xCoordinate < x){
+        validXCoordinate = true;
+      }
+      else {
+        Console.WriteLine("Please enter a number between 0 and " + x + ". The number can be 0, but should be less than " + x + ": ");
+      }
+    }
+}
+
+Console.WriteLine ("Please enter y coordinate of the cell that you want to track: ");
+
+    while(! validYCoordinate)
+{
+    if (! Int32.TryParse(Console.ReadLine(), out yCoordinate)){
+      Console.WriteLine("This is not a number. Please enter the number of the y coordinate: ");
+    }
+    else {
+      if (yCoordinate >= 0 && yCoordinate < y){
+        validYCoordinate = true;
+      }
+      else {
+        Console.WriteLine("Please enter a number between 0 and " + y + ". The number can be 0, but should be less than " + y + ": ");
+      }
+    }
+}
+        
+       
+       
+       
+        int[,] grid = new int[x, y];
+        int[,] newGrid = new int[x, y];
+        
+        Random rnd = new Random();
+        
+        
+        
+        //This part is to print the initial grid
+        
+        Console.WriteLine("Initial grid");
+        
+        for (int i = 0; i<x; i++){
+            for (int j = 0; j<y; j++){
+                int r = rnd.Next(0,2);
+                grid[i, j] = r;
+                Console.Write(grid[i, j]);
+                Console.ReadLine();
+              
+            }
+            Console.WriteLine();
+        }
+        
+       Console.WriteLine();
+         
+         //flippingCell = grid[xCoordinate, yCoordinate];
+         
+         for (int k = 0; k < n; k++){
+         
+        for (int i = 0; i < x; i++){
+            for (int j = 0; j < y; j++){
+                newGrid[i,j] = grid[i, j];
+                if (i == 0 && j == 0){
+                    if (grid [i, j] == 0){
+                    if (grid [i, j+1] + grid [i + 1, j] + grid [i+1, j+1] == 3){
+                        newGrid [i, j] = 1;
+                    }
+                    }else if (grid [i, j+1] + grid [i + 1, j] + grid [i+1, j+1] < 2){
+                        newGrid [i, j] = 0;
+                    }
+                }
+                else if (i> 0 && i< x - 1 && j == 0){
+                    if (grid [i, j] == 0){
+                    if (grid[i, j+1] + grid[i+1, j] + grid[i+1, j + 1]+ grid[i-1, j] + grid[i-1, j+1] == 3
+                    || grid[i, j+1] + grid[i+1, j] + grid[i+1, j + 1]+ grid[i-1, j] + grid[i-1, j+1] ==6){
+                        newGrid [i, j] = 1;
+                    }
+                    }
+                    else if (grid[i, j+1] + grid[i+1, j] + grid[i+1, j + 1]+ grid[i-1, j] + grid[i-1, j+1] != 2 
+                    && grid[i, j+1] + grid[i+1, j] + grid[i+1, j + 1]+ grid[i-1, j] + grid[i-1, j+1] != 3){
+                        newGrid[i,j] = 0;
+                    }
+                
+            }
+            else if (i == x - 1 && j == 0){
+                    if (grid [i, j] == 0){
+                    if (grid [i, j+1] + grid [i - 1, j] + grid [i-1, j+1] == 3){
+                        newGrid [i, j] = 1;
+                    }
+                    }else if (grid [i, j+1] + grid [i - 1, j] + grid [i-1, j+1] < 2){
+                        newGrid [i, j] = 0;
+                    }
+            }
+            else if (i == 0 && j > 0 && j < y - 1){
+                if (grid [i, j] == 0){
+                    if (grid[i, j+1] + grid[i+1, j] + grid[i+1, j + 1]+ grid[i+1, j-1] + grid[i, j-1] == 3
+                    || grid[i, j+1] + grid[i+1, j] + grid[i+1, j + 1]+ grid[i+1, j-1] + grid[i, j-1] ==6){
+                        newGrid [i, j] = 1;
+                     }
+                }
+                    else if (grid[i, j+1] + grid[i+1, j] + grid[i+1, j + 1]+ grid[i+1, j-1] + grid[i, j-1] != 2
+                    && grid[i, j+1] + grid[i+1, j] + grid[i+1, j + 1]+ grid[i+1, j-1] + grid[i, j-1] != 3){
+                        
+                        newGrid[i,j] = 0;
+                    }
+                    
+                
+            }
+            else if (i == 0 && j == y - 1){
+                    if (grid [i, j] == 0){
+                    if (grid [i, j - 1] + grid [i + 1, j] + grid [i + 1, j - 1] == 3){
+                        newGrid [i, j] = 1;
+                    }
+                    }else if (grid [i, j - 1] + grid [i + 1, j] + grid [i + 1, j - 1] < 2){
+                        newGrid [i, j] = 0;
+                    }
+            }
+            else if (i > 0 && i < x - 1 && j == y - 1){
+                if (grid [i, j] == 0){
+                    if (grid[i - 1, j] + grid[i - 1, j - 1] + grid[i, j - 1]+ grid[i + 1, j-1] + grid[i + 1, j] == 3
+                    || grid[i - 1, j] + grid[i - 1, j - 1] + grid[i, j - 1]+ grid[i + 1, j-1] + grid[i + 1, j] ==6){
+                        newGrid [i, j] = 1;
+                     }
+                }
+                    else if (grid[i - 1, j] + grid[i - 1, j - 1] + grid[i, j - 1]+ grid[i + 1, j-1] + grid[i + 1, j] != 2
+                    && grid[i - 1, j] + grid[i - 1, j - 1] + grid[i, j - 1]+ grid[i + 1, j-1] + grid[i + 1, j] != 3){
+                        
+                        newGrid[i,j] = 0;
+                    }
+                    
+                
+            }
+            else if (i == x - 1 && j == y - 1){
+                    if (grid [i, j] == 0){
+                    if (grid [i, j - 1] + grid [i - 1, j] + grid [i - 1, j - 1] == 3){
+                        newGrid [i, j] = 1;
+                    }
+                    }else if (grid [i, j - 1] + grid [i - 1, j] + grid [i - 1, j - 1] < 2){
+                        newGrid [i, j] = 0;
+                    }
+            }
+            else if (i == x - 1 && j > 0 && j < y - 1){
+                if (grid [i, j] == 0){
+                    if (grid[i - 1, j] + grid[i - 1, j - 1] + grid[i - 1, j + 1]+ grid[i, j - 1] + grid[i, j + 1] == 3
+                    || grid[i - 1, j] + grid[i - 1, j - 1] + grid[i - 1, j + 1]+ grid[i, j - 1] + grid[i, j + 1] ==6){
+                        newGrid [i, j] = 1;
+                     }
+                }
+                    else if (grid[i - 1, j] + grid[i - 1, j - 1] + grid[i - 1, j + 1]+ grid[i, j - 1] + grid[i, j + 1] != 2
+                    && grid[i - 1, j] + grid[i - 1, j - 1] + grid[i - 1, j + 1]+ grid[i, j - 1] + grid[i, j + 1] != 3){
+                        
+                        newGrid[i,j] = 0;
+                    }
+                    
+                
+            }
+            else {
+                if (grid [i, j] == 0){
+                    if (grid[i - 1, j] + grid[i - 1, j - 1] + grid[i - 1, j + 1]+ grid[i, j - 1] + grid[i, j + 1] + grid [i + 1, j - 1] + grid [i + 1, j] + grid [i + 1, j + 1] == 3
+                    || grid[i - 1, j] + grid[i - 1, j - 1] + grid[i - 1, j + 1]+ grid[i, j - 1] + grid[i, j + 1] + grid [i + 1, j - 1] + grid [i + 1, j] + grid [i + 1, j + 1] ==6){
+                        newGrid [i, j] = 1;
+                     }
+                }
+                    else if (grid[i - 1, j] + grid[i - 1, j - 1] + grid[i - 1, j + 1]+ grid[i, j - 1] + grid[i, j + 1] + grid [i + 1, j - 1] + grid [i + 1, j] + grid [i + 1, j + 1] != 2
+                    && grid[i - 1, j] + grid[i - 1, j - 1] + grid[i - 1, j + 1]+ grid[i, j - 1] + grid[i, j + 1] + grid [i + 1, j - 1] + grid [i + 1, j] + grid [i + 1, j + 1] != 3
+                    && grid[i - 1, j] + grid[i - 1, j - 1] + grid[i - 1, j + 1]+ grid[i, j - 1] + grid[i, j + 1] + grid [i + 1, j - 1] + grid [i + 1, j] + grid [i + 1, j + 1] != 6){
+                        
+                        newGrid[i,j] = 0;
+                    }
+            }
+        }
+        
+        }
+        //flippingCell = grid[xCoordinate, yCoordinate];
+        if (newGrid[xCoordinate, yCoordinate] > grid[xCoordinate, yCoordinate]){
+            numberOfFlips++;
+        }
+        
+        
+        // This part is to print all generations
+        Console.WriteLine("Grid after flip # " + (k+1));
+        for (int l = 0; l<x; l++){
+            for (int m = 0; m < y; m++){
+                
+                Console.Write(newGrid[l, m]);
+                Console.ReadLine();
+             
+            }
+            Console.WriteLine();
+        }
+        Console.WriteLine();
+        
+        
+        // comment to here
+        //grid[,] = (int[,])newGrid.Clone();
+        Array.Copy(newGrid, 0, grid, 0, newGrid.Length);
+         }
+         Console.WriteLine("Summary:");
+         Console.WriteLine("# "+x + "x"+ y + " grid. Input:");
+        for (int l = 0; l<x; l++){
+            for (int m = 0; m < y; m++){
+                
+                Console.Write(newGrid[l, m]);
+                Console.ReadLine();
+             
+            }
+            Console.WriteLine();
+        }
+        
+        Console.WriteLine(xCoordinate + ", " + yCoordinate + ", " + n);
+        Console.WriteLine("# expected result: " + numberOfFlips);
+        
+         Console.ReadLine();
+    }
+}
